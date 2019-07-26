@@ -1,6 +1,6 @@
 {
   "name": "container-image-builder",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "container image builder. without docker, docker/oci registry client and image building helpers for protocol version 2",
   "main": "build/src/index.js",
   "keywords": [],
@@ -38,8 +38,10 @@
     "typescript": "~3.1.0"
   },
   "dependencies": {
+    "dotenv": "^8.2.0",
     "google-auth-library": "^3.0.1",
     "micromatch": "^3.1.10",
+    "node-fetch": "^3.3.2",
     "p-retry": "^3.0.1",
     "request": "^2.88.0",
     "tar": "^4.4.8",
