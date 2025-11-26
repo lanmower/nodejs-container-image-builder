@@ -4,12 +4,15 @@
     "rootDir": ".",
     "outDir": "build",
     "target":"es2018",
-    "lib":["es2018"]
+    "lib":["es2018"],
+    "skipLibCheck": true
   },
   "include": [
     "src/*.ts",
-    "src/**/*.ts",
-    "test/*.ts",
-    "test/**/*.ts"
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "test",
+    "node_modules"
   ]
 }

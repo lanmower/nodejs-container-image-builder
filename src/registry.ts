@@ -76,7 +76,7 @@ export class RegistryClient {
           url, {
             headers: {
               Authorization: this.authHeader(),
-              Accept: 'application/vnd.docker.distribution.manifest.v2+json'
+              Accept: 'application/vnd.oci.image.index.v1+json, application/vnd.docker.distribution.manifest.list.v2+json, application/vnd.docker.distribution.manifest.v2+json'
             }
           },
           (err: Error, res: Response, body: Buffer) => {
@@ -84,8 +84,28 @@ export class RegistryClient {
             try {
               const parsed = JSON.parse(body + '');
 
-              if (res.statusCode === 200 && parsed.config) {
-                resolve(parsed);
+              if (res.statusCode === 200) {
+                if (parsed.manifests && parsed.mediaType && (
+                  parsed.mediaType === 'application/vnd.oci.image.index.v1+json' ||
+                  parsed.mediaType === 'application/vnd.docker.distribution.manifest.list.v2+json'
+                )) {
+                  const arch = process.arch === 'x64' ? 'amd64' : process.arch;
+                  const platform = parsed.manifests.find((m: any) =>
+                    m.platform && m.platform.os === 'linux' &&
+                    m.platform.architecture === arch
+                  ) || parsed.manifests[0];
+
+                  return this.manifest(platform.digest).then(resolve).catch(reject);
+                }
+
+                if (parsed.config) {
+                  resolve(parsed);
+                } else {
+                  reject(new Error(
+                      'unexpected manifest format from ' + url +
+                      ' - no config field and not a manifest list' +
+                      ')  response ' + body));
+                }
               } else {
                 reject(new Error(
                     'unexpected status code ' + res.statusCode +

@@ -365,7 +365,7 @@ export class Image {
               }
             });
           };
-          return retry(action, {retries: 3}).then(() => true);
+          return retry(action, {retries: 3} as any).then(() => true);
         }
         return true;
       });

@@ -61,8 +61,8 @@ export class DockerCredentialHelpers {
           resolve((json(Buffer.concat(bufs)) || {}) as DockerAuthResult);
         }
       };
-      const proc = spawn(helper, ['get']);
-      proc.on('exit', (code) => {
+      const proc = spawn(helper, ['get'] as any);
+      proc.on('exit', (code: any) => {
         if (code) {
           return reject(new Error(
               'exit code ' + code + ' from docker credential helper ' + helper +
@@ -71,11 +71,11 @@ export class DockerCredentialHelpers {
         maybeEnd();
       });
 
-      proc.stdout.on('data', (b) => bufs.push(b))
+      proc.stdout.on('data', (b: any) => bufs.push(b))
           .on('end', maybeEnd)
           .on('error', maybeEnd);
 
-      proc.stderr.on('data', (b) => ebufs.push(b)).on('error', maybeEnd);
+      proc.stderr.on('data', (b: any) => ebufs.push(b)).on('error', maybeEnd);
       proc.stdin.end(host);
     });
   }
