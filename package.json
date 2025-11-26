@@ -3,6 +3,14 @@
   "version": "4.0.0",
   "description": "container image builder with OCI multi-platform manifest support. without docker, docker/oci registry client and image building helpers for protocol version 2",
   "main": "build/src/index.js",
+  "files": [
+    "build/**/*",
+    "bin/**/*",
+    "src/**/*",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
   "keywords": [],
   "scripts": {
     "test": "nyc mocha -t 60000 --require source-map-support/register build/test/*.js",
